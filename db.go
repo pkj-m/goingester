@@ -15,13 +15,6 @@ func ConnectDB() error {
 	if err != nil {
 		return err
 	}
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-			fmt.Println("error in closing db")
-		}
-	}(db)
-
 	err = db.Ping()
 	if err != nil {
 		return err

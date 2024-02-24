@@ -38,10 +38,17 @@ func main() {
 
 	http.HandleFunc("/ingest", handlerFunc)
 	portNum := fmt.Sprintf(":%d", cfg.HttpServerPort)
+
+	fmt.Println("Listening on port", portNum)
 	err = http.ListenAndServe(portNum, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Listening on port", portNum)
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println("error in closing db")
+		}
+	}(db)
 }
